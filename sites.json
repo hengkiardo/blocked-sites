@@ -5461,5 +5461,25 @@
         "host": "cnet",
         "tld": "com",
         "parent_domain": "cnet.com"
+    },
+    {
+        "protocol": "http:",
+        "host": "semprot",
+        "port": null,
+        "hostname": "www.semprot.com",
+        "path": "/",
+        "subdomain": "www",
+        "tld": "com",
+        "domain": "semprot.com"
+    },
+    {
+        "protocol": "http:",
+        "host": "incezt",
+        "port": null,
+        "hostname": "incezt.net",
+        "path": "/",
+        "subdomain": null,
+        "tld": "net",
+        "domain": "incezt.net"
     }
 ]
