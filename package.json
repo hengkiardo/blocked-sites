@@ -18,15 +18,15 @@
     "list"
   ],
   "dependencies": {
-    "first-match": "~0.0.1"
+    "first-match": "~0.0.1",
+    "express": "^4.3.2",
+    "validator": "^3.12.0",
+    "lodash": "^2.4.1"
   },
   "devDependencies": {
     "async": "^0.9.0",
-    "lodash": "^2.4.1",
-    "express": "^4.3.2",
     "request": "^2.36.0",
-    "cheerio": "^0.16.0",
-    "validator": "^3.12.0"
+    "cheerio": "^0.16.0"
   },
   "author": "Hengki Sihombing <hengki.sihombing@gmail.com> (http://twitter.com/hengkiardo)",
   "license": "MIT",

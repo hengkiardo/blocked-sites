@@ -2,10 +2,6 @@
 
 var express = require('express');
 var fs = require('fs');
-var request = require('request');
-var cheerio = require('cheerio');
-var async = require('async');
-var dns = require('getIP');
 var _ = require('lodash');
 var Validators = require('validator');
 
@@ -15,69 +11,74 @@ var app = express();
 
 var parseURL = require('parseURL');
 
-// app.get('/scraping', function(req, res) {
-//     var links = [];
 
-//     async.waterfall([
-//         function (callback) {
-//             request('http://theporndude.com/', function(error, response, html) {
-//                 var $ = cheerio.load(html);
+app.get('/scraping', function(req, res) {
+    // var request = require('request');
+    // var cheerio = require('cheerio');
+    // var async = require('async');
+    // var dns = require('getIP');
+    var links = [];
 
-//                 var alink = $('a.link');
+    async.waterfall([
+        function (callback) {
+            request('http://theporndude.com/', function(error, response, html) {
+                var $ = cheerio.load(html);
 
-//                 alink.each(function( index ) {
+                var alink = $('a.link');
 
-//                     var href = $(this).attr('href');
-//                     var link = parseURL(href);
+                alink.each(function( index ) {
 
-//                     if( links.length > 0 && link != 'undefined') {
+                    var href = $(this).attr('href');
+                    var link = parseURL(href);
 
-//                         var check = _.find(links, function(lk) {
-//                             return lk.host == link.host
-//                         })
+                    if( links.length > 0 && link != 'undefined') {
 
-//                         if(!_.isObject(check)) {
-//                             links.push(link);
-//                         }
-//                     } else {
-//                         links.push(link);
-//                     }
+                        var check = _.find(links, function(lk) {
+                            return lk.host == link.host
+                        })
 
-//                 });
-//                 callback(null, links)
-//             })
-//         },
-//         function (links, callback) {
-//             request('http://mypornbible.com/', function(error, response, html) {
-//                 var $ = cheerio.load(html);
+                        if(!_.isObject(check)) {
+                            links.push(link);
+                        }
+                    } else {
+                        links.push(link);
+                    }
 
-//                 var alink = $('li a.link');
+                });
+                callback(null, links)
+            })
+        },
+        function (links, callback) {
+            request('http://mypornbible.com/', function(error, response, html) {
+                var $ = cheerio.load(html);
 
-//                 alink.each(function( index ) {
-//                     var href = $(this).attr('href');
-//                     var link = parseURL(href);
+                var alink = $('li a.link');
 
-//                     if( links.length > 0 && link != 'undefined') {
+                alink.each(function( index ) {
+                    var href = $(this).attr('href');
+                    var link = parseURL(href);
 
-//                         var check = _.find(links, function(lk) {
-//                             return lk.host == link.host
-//                         })
+                    if( links.length > 0 && link != 'undefined') {
 
-//                         if(!_.isObject(check)) {
-//                             links.push(link);
-//                         }
-//                     } else {
-//                         links.push(link);
-//                     }
-//                 });
-//                 callback(links)
-//             })
-//         }
-//     ], function ( links) {
-//         res.send(links);
-//         fs.writeFileSync('sites.json', JSON.stringify(links, null, 4));
-//     });
-// });
+                        var check = _.find(links, function(lk) {
+                            return lk.host == link.host
+                        })
+
+                        if(!_.isObject(check)) {
+                            links.push(link);
+                        }
+                    } else {
+                        links.push(link);
+                    }
+                });
+                callback(links)
+            })
+        }
+    ], function ( links) {
+        res.send(links);
+        fs.writeFileSync('sites.json', JSON.stringify(links, null, 4));
+    });
+});
 
 
 app.get('/add', function(req, res) {
