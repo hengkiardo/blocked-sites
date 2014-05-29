@@ -6,11 +6,13 @@ var async = require('async');
 var dns = require('getIP');
 var _ = require('lodash');
 
+var allSites = require('sites');
+
 var app = express();
 
 var parseURL = require('parseURL');
 
-app.get('/', function(req, res) {
+app.get('/scrapping', function(req, res) {
     var links = [];
 
     async.waterfall([
@@ -72,6 +74,30 @@ app.get('/', function(req, res) {
         res.send(links);
         fs.writeFileSync('sites.json', JSON.stringify(links, null, 4));
     });
+});
+
+
+app.get('/add', function(req, res) {
+    var new_site = req.query.site;
+
+    var link = parseURL(new_site);
+
+    var check = _.find(allSites, function(st) {
+        return st.host == link.host
+    })
+
+
+    if(!_.isObject(check)) {
+        allSites.push(link);
+    }
+
+    fs.writeFileSync('sites.json', JSON.stringify(allSites, null, 4));
+
+    res.send(link);
+})
+
+app.get('/', function(req, res) {
+    res.json(200, allSites);
 })
 
 app.listen('8081')
