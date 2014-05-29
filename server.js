@@ -5,11 +5,11 @@ var fs = require('fs');
 var _ = require('lodash');
 var Validators = require('validator');
 
-var allSites = require('sites');
+var allSites = require('./sites');
 
 var app = express();
 
-var parseURL = require('parseURL');
+var parseURL = require('./parseURL');
 
 
 app.get('/scraping', function(req, res) {
