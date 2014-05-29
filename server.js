@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var fs = require('fs');
 var request = require('request');
@@ -12,7 +14,7 @@ var app = express();
 
 var parseURL = require('parseURL');
 
-app.get('/scrapping', function(req, res) {
+app.get('/scraping', function(req, res) {
     var links = [];
 
     async.waterfall([

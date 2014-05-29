@@ -1,38 +1,42 @@
-module.exports = function parseURL(url) {
-    parsed_url = {}
+(function(module) {
+  'use strict';
 
-    if ( url == null || url.length == 0 )
-        return parsed_url;
+  var Url = require('url');
 
-    protocol_i = url.indexOf('://');
-    parsed_url.protocol = url.substr(0,protocol_i);
+  module.exports = function parseURL(url) {
 
-    remaining_url = url.substr(protocol_i + 3, url.length);
-    domain_i = remaining_url.indexOf('/');
-    domain_i = domain_i == -1 ? remaining_url.length - 1 : domain_i;
-    parsed_url.domain = remaining_url.substr(0, domain_i);
-    parsed_url.path = domain_i == -1 || domain_i + 1 == remaining_url.length ? null : remaining_url.substr(domain_i + 1, remaining_url.length);
+      var parsed_url = Url.parse(url);
 
-    domain_parts = parsed_url.domain.split('.');
-    switch ( domain_parts.length ){
-        case 2:
-          parsed_url.subdomain = null;
-          parsed_url.host = domain_parts[0];
-          parsed_url.tld = domain_parts[1];
-          break;
-        case 3:
-          parsed_url.subdomain = domain_parts[0];
-          parsed_url.host = domain_parts[1];
-          parsed_url.tld = domain_parts[2];
-          break;
-        case 4:
-          parsed_url.subdomain = domain_parts[0];
-          parsed_url.host = domain_parts[1];
-          parsed_url.tld = domain_parts[2] + '.' + domain_parts[3];
-          break;
-    }
+      var domain_parts = parsed_url.hostname.split('.');
 
-    parsed_url.parent_domain = parsed_url.host + '.' + parsed_url.tld;
+      switch ( domain_parts.length ){
+          case 2:
+            parsed_url.subdomain = null;
+            parsed_url.host = domain_parts[0];
+            parsed_url.tld = domain_parts[1];
+            parsed_url.domain = domain_parts[0] + '.' + domain_parts[1];
+            break;
+          case 3:
+            parsed_url.subdomain = domain_parts[0];
+            parsed_url.host = domain_parts[1];
+            parsed_url.tld = domain_parts[2];
+            parsed_url.domain = domain_parts[1] + '.' + domain_parts[2];
+            break;
+          case 4:
+            parsed_url.subdomain = domain_parts[0];
+            parsed_url.host = domain_parts[1];
+            parsed_url.tld = domain_parts[2] + '.' + domain_parts[3];
+            break;
+      }
 
-    return parsed_url;
-}
+      delete parsed_url.auth;
+      delete parsed_url.search;
+      delete parsed_url.query;
+      delete parsed_url.href;
+      delete parsed_url.hash;
+      delete parsed_url.slashes;
+      delete parsed_url.pathname;
+
+      return parsed_url
+  }
+})(module);
