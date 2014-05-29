@@ -7,6 +7,7 @@ var cheerio = require('cheerio');
 var async = require('async');
 var dns = require('getIP');
 var _ = require('lodash');
+var Validators = require('validator');
 
 var allSites = require('sites');
 
@@ -14,88 +15,94 @@ var app = express();
 
 var parseURL = require('parseURL');
 
-app.get('/scraping', function(req, res) {
-    var links = [];
+// app.get('/scraping', function(req, res) {
+//     var links = [];
 
-    async.waterfall([
-        function (callback) {
-            request('http://theporndude.com/', function(error, response, html) {
-                var $ = cheerio.load(html);
+//     async.waterfall([
+//         function (callback) {
+//             request('http://theporndude.com/', function(error, response, html) {
+//                 var $ = cheerio.load(html);
 
-                var alink = $('a.link');
+//                 var alink = $('a.link');
 
-                alink.each(function( index ) {
+//                 alink.each(function( index ) {
 
-                    var href = $(this).attr('href');
-                    var link = parseURL(href);
+//                     var href = $(this).attr('href');
+//                     var link = parseURL(href);
 
-                    if( links.length > 0 && link != 'undefined') {
+//                     if( links.length > 0 && link != 'undefined') {
 
-                        var check = _.find(links, function(lk) {
-                            return lk.host == link.host
-                        })
+//                         var check = _.find(links, function(lk) {
+//                             return lk.host == link.host
+//                         })
 
-                        if(!_.isObject(check)) {
-                            links.push(link);
-                        }
-                    } else {
-                        links.push(link);
-                    }
+//                         if(!_.isObject(check)) {
+//                             links.push(link);
+//                         }
+//                     } else {
+//                         links.push(link);
+//                     }
 
-                });
-                callback(null, links)
-            })
-        },
-        function (links, callback) {
-            request('http://mypornbible.com/', function(error, response, html) {
-                var $ = cheerio.load(html);
+//                 });
+//                 callback(null, links)
+//             })
+//         },
+//         function (links, callback) {
+//             request('http://mypornbible.com/', function(error, response, html) {
+//                 var $ = cheerio.load(html);
 
-                var alink = $('li a.link');
+//                 var alink = $('li a.link');
 
-                alink.each(function( index ) {
-                    var href = $(this).attr('href');
-                    var link = parseURL(href);
+//                 alink.each(function( index ) {
+//                     var href = $(this).attr('href');
+//                     var link = parseURL(href);
 
-                    if( links.length > 0 && link != 'undefined') {
+//                     if( links.length > 0 && link != 'undefined') {
 
-                        var check = _.find(links, function(lk) {
-                            return lk.host == link.host
-                        })
+//                         var check = _.find(links, function(lk) {
+//                             return lk.host == link.host
+//                         })
 
-                        if(!_.isObject(check)) {
-                            links.push(link);
-                        }
-                    } else {
-                        links.push(link);
-                    }
-                });
-                callback(links)
-            })
-        }
-    ], function ( links) {
-        res.send(links);
-        fs.writeFileSync('sites.json', JSON.stringify(links, null, 4));
-    });
-});
+//                         if(!_.isObject(check)) {
+//                             links.push(link);
+//                         }
+//                     } else {
+//                         links.push(link);
+//                     }
+//                 });
+//                 callback(links)
+//             })
+//         }
+//     ], function ( links) {
+//         res.send(links);
+//         fs.writeFileSync('sites.json', JSON.stringify(links, null, 4));
+//     });
+// });
 
 
 app.get('/add', function(req, res) {
     var new_site = req.query.site;
 
-    var link = parseURL(new_site);
+    if(Validators.isURL(new_site)) {
 
-    var check = _.find(allSites, function(st) {
-        return st.host == link.host
-    })
+        var link = parseURL(new_site);
+
+        var check = _.find(allSites, function(st) {
+            return st.host == link.host
+        })
 
 
-    if(!_.isObject(check)) {
-        allSites.push(link);
+        if(!_.isObject(check)) {
+            allSites.push(link);
+        }
+
+        fs.writeFileSync('sites.json', JSON.stringify(allSites, null, 4));
+
+        res.send(link);
+    } else {
+        res.json(505, { error : 'You should add full Url to add new sites'})
     }
 
-    fs.writeFileSync('sites.json', JSON.stringify(allSites, null, 4));
-
-    res.send(link);
 })
 
 app.get('/', function(req, res) {
