@@ -4,6 +4,7 @@
   "description": "List of porn sites on the world",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "node test.js"
   },
   "repository": {
