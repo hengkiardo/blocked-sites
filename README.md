@@ -14,11 +14,12 @@ I create this repo, because i want to list all (top) porn site, we when user sub
 - Just do [Pull request]https://github.com/aredo/porn-site-list/pulls and new site with JSON structure
 ```js
 {
-    "protocol": "",
-    "domain": "",
-    "subdomain": "",
-    "host": "",
-    "tld": "",
-    "parent_domain": ""
+  "protocol": "http",
+  "domain": "www.tube8.com",
+  "path": null,
+  "subdomain": "www",
+  "host": "tube8",
+  "tld": "com",
+  "parent_domain": "tube8.com"
 }
 ```
