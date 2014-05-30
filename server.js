@@ -4,13 +4,10 @@ var express = require('express');
 var fs = require('fs');
 var _ = require('lodash');
 var Validators = require('validator');
-
+var parseURL = require('node-parse-url');
 var allSites = require('./sites');
 
 var app = express();
-
-var parseURL = require('./parseURL');
-
 
 app.get('/scraping', function(req, res) {
     // var request = require('request');

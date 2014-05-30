@@ -1,6 +1,6 @@
 {
   "name": "porn-sites",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "List of porn sites on the world",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,8 @@
     "first-match": "~0.0.1",
     "express": "^4.3.2",
     "validator": "^3.12.0",
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "node-parse-url": "^0.1.0"
   },
   "devDependencies": {
     "async": "^0.9.0",
