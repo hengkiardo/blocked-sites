@@ -6,14 +6,14 @@ var _ = require('lodash');
 var Validators = require('validator');
 var parseURL = require('node-parse-url');
 var allSites = require('./sites');
+var getIp = require('./getIP');
+var request = require('request');
+var cheerio = require('cheerio');
+var async = require('async');
 
 var app = express();
 
 app.get('/scraping', function(req, res) {
-    // var request = require('request');
-    // var cheerio = require('cheerio');
-    // var async = require('async');
-    // var dns = require('getIP');
     var links = [];
 
     async.waterfall([
@@ -80,6 +80,7 @@ app.get('/scraping', function(req, res) {
 
 app.get('/add', function(req, res) {
     var new_site = req.query.site;
+    var dns = require('dns');
 
     if(Validators.isURL(new_site)) {
 
@@ -87,16 +88,28 @@ app.get('/add', function(req, res) {
 
         var check = _.find(allSites, function(st) {
             return st.host == link.host
-        })
+        });
 
+        async.waterfall([
+            function (callback) {
+                dns.resolve4(link.domain, function (err, addresses) {
+                    if (err) return false;
+                    callback(null, addresses);
+                });
+            }
+        ], function (err, ip) {
 
-        if(!_.isObject(check)) {
-            allSites.push(link);
-        }
+            link.ip = ip;
 
-        fs.writeFileSync('sites.json', JSON.stringify(allSites, null, 4));
+            if(!_.isObject(check)) {
+                allSites.push(link);
+            }
 
-        res.send(link);
+            fs.writeFileSync('sites.json', JSON.stringify(allSites, null, 4));
+
+            res.send(link);
+        });
+
     } else {
         res.json(505, { error : 'You should add full Url to add new sites'})
     }

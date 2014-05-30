@@ -1,8 +1,11 @@
-var dns = require('dns');
+// (function(module) {
+//   var dns = require('dns');
 
-exports.getIP = function getIP(domain) {
-  dns.resolve4(domain, function (err, addresses) {
-    if (err) return false;
-    return addresses
-  });
-}
+//   'use strict';
+
+//   module.exports = function getIP(domain) {
+
+
+
+//   }
+// })(module);
