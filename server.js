@@ -120,5 +120,5 @@ app.get('/', function(req, res) {
     res.json(200, allSites);
 })
 
-app.listen(5566);
+app.listen(process.env.PORT || 5566);
 exports = module.exports = app;
