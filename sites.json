@@ -5500,5 +5500,18 @@
         "ip": [
             "209.15.13.134"
         ]
+    },
+    {
+        "protocol": "http:",
+        "host": "sambaporno",
+        "port": null,
+        "hostname": "sambaporno.com",
+        "path": "/",
+        "subdomain": "www",
+        "tld": "com",
+        "domain": "sambaporno.com",
+        "ip": [
+            "64.188.56.171"
+        ]
     }
 ]
