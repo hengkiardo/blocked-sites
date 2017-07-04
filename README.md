@@ -9,7 +9,6 @@ Currently lists of site, scrapping from [theporndude.com](http://theporndude.com
 
 I create this repo, because i want to list all (top) porn site, we when user submit link to your site, you cant check and prevent
 
-
 ### How to contribute?
 - Just do [Pull request]https://github.com/aredo/porn-site-list/pulls and new site with JSON structure
 ```js
